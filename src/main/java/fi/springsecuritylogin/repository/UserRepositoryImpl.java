@@ -9,6 +9,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import com.mongodb.WriteConcern;
+
 import fi.springsecuritylogin.domain.User;
 
 @Repository("userRepository")
@@ -22,6 +24,7 @@ public class UserRepositoryImpl implements UserRepository {
   public void add(User user) {
     log.info("Adding new user");
     try {
+      mongoTemplate.setWriteConcern(WriteConcern.REPLICAS_SAFE);
       mongoTemplate.insert(user, "usercollection");
      }
      catch (Exception e) {
@@ -42,11 +45,13 @@ public class UserRepositoryImpl implements UserRepository {
   }
   
   public User addUser(User user) {
+    mongoTemplate.setWriteConcern(WriteConcern.REPLICAS_SAFE);
     mongoTemplate.insert(user, "usercollection");
     return getUser(user.getId());
   }
   
   public User updateUser(User user) {
+    mongoTemplate.setWriteConcern(WriteConcern.REPLICAS_SAFE);
     mongoTemplate.save(user, "usercollection"); 
     return getUser(user.getId());
   }
@@ -60,10 +65,12 @@ public class UserRepositoryImpl implements UserRepository {
   }
   
   public void saveUser(User user) {
+    mongoTemplate.setWriteConcern(WriteConcern.REPLICAS_SAFE);
     mongoTemplate.save(user);
   }
 
   public User save(User user) {
+    mongoTemplate.setWriteConcern(WriteConcern.REPLICAS_SAFE);
     mongoTemplate.save(user);
     return getUser(user.getId());
   }
