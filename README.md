@@ -15,10 +15,8 @@ See fi.springsecuritylogin.config.MongoTemplateConfig
 There is no page to handle user roles yet. For modifying an existing user to ROLE_ADMIN, use:
 ```
 db.usercollection.update({username: "USERNAME"},{"$set":{
-
-authorities:{ "role" : "ROLE_ADMIN", "_class" : "org.springframework.security.core.authority.SimpleGrantedAuthority"}
-
-}});
+ authorities:{ "role" : "ROLE_ADMIN", "_class" : "org.springframework.security.core.authority.SimpleGrantedAuthority"}
+ }});
 ```
 
 If you need roles with IP restrictions, use:
@@ -31,8 +29,17 @@ If you need roles with IP restrictions, use:
 </http>
 ```
 
-See security-context.xml and http://static.springsource.org/spring-security/site/docs/3.1.x/reference/el-access.html#el-access-web
-for more.
+See security-context.xml and http://static.springsource.org/spring-security/site/docs/3.1.x/reference/el-access.html#el-access-web for more.
+
+
+
+SSL
 ========
+You need to add it your self.
+
+
+jetty session management
+========
+See: <a href="https://github.com/yyuu/jetty-nosql-memcached">jetty-nosql-memcached</a>
 
 
