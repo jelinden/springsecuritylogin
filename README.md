@@ -15,7 +15,9 @@ See fi.springsecuritylogin.config.MongoTemplateConfig
 There is no page to handle user roles yet. For modifying an existing user to ROLE_ADMIN, use:
 ```
 db.usercollection.update({username: "USERNAME"},{"$set":{
+
 authorities:{ "role" : "ROLE_ADMIN", "_class" : "org.springframework.security.core.authority.SimpleGrantedAuthority"}
+
 }});
 ```
 
