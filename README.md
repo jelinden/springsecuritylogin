@@ -16,7 +16,9 @@ There is no page to handle user roles yet. For modifying an existing user to ROL
 
 <pre lang="javascript"><code>
 db.usercollection.update({username: "USERNAME"},{"$set":{
-    authorities:{ "role" : "ROLE_ADMIN", "_class" : "org.springframework.security.core.authority.SimpleGrantedAuthority"}
+    authorities:{ 
+    "role" : "ROLE_ADMIN", 
+    "_class" : "org.springframework.security.core.authority.SimpleGrantedAuthority"}
     }});
 </code></pre>
 
