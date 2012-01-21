@@ -13,7 +13,7 @@ Set up mongodb on your computer (<a href="http://www.mongodb.org/downloads">Down
 See fi.springsecuritylogin.config.MongoTemplateConfig
 
 There is no page to handle user roles yet. For modifying an existing user to ROLE_ADMIN, use:
-```
+```javascript
 db.usercollection.update({username: "USERNAME"},{"$set":{
     authorities:{ "role" : "ROLE_ADMIN", "_class" : "org.springframework.security.core.authority.SimpleGrantedAuthority"}
     }});
