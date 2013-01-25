@@ -1,7 +1,5 @@
 package fi.springsecuritylogin.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,10 +22,10 @@ public class MainController {
   protected final Logger log = LoggerFactory.getLogger(getClass());
 
   @RequestMapping(value = "", method = RequestMethod.GET)
-  protected String getNews(HttpServletRequest request, Model model)
+  protected String getMainPage(Model model)
       throws Exception {
-
-    User user = userService.get(SecurityContextHolder.getContext().getAuthentication().getName());
+    User user = userService.get(
+        SecurityContextHolder.getContext().getAuthentication().getName());
     model.addAttribute("user", user);
     return "index";
   }

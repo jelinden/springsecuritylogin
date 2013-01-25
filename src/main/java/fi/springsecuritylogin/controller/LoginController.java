@@ -35,17 +35,16 @@ public class LoginController {
 
   @RequestMapping(value = "/signup", method = RequestMethod.POST)
   protected String signupPost(Model model, @Valid @ModelAttribute User user, BindingResult bindingResult) {
-      if (bindingResult.hasErrors()) {
-        return "signup";
-      }
-      List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
-      roles.add(new SimpleGrantedAuthority("ROLE_USER"));
-      User realUser = new User(user.getUsername(), HashedPasswordWithSalt.getHashedPassword(user), user.getEmail(), roles);
-
-      userService.add(realUser);
-      return "redirect:/";
+    if (bindingResult.hasErrors()) {
+      return "signup";
+    }
+    List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
+    roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+    User realUser = new User(user.getUsername(), HashedPasswordWithSalt.getHashedPassword(user), user.getEmail(), roles);
+    userService.add(realUser);
+    return "redirect:/";
   }
-  
+
   @RequestMapping(value = "/login", method = RequestMethod.GET)
   protected void login(Model model) throws Exception {
     model.addAttribute("user", new User());
@@ -54,5 +53,4 @@ public class LoginController {
   public void setUserService(UserService userService) {
     this.userService = userService;
   }
-
 }

@@ -24,16 +24,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 
-@Document(collection="usercollection")
+@Document(collection = "usercollection")
 @Validated
-public class User implements java.io.Serializable, UserDetails, CredentialsContainer {
-  
+public class User implements java.io.Serializable, UserDetails,
+    CredentialsContainer {
+
   private static final long serialVersionUID = -9214271474279476483L;
 
   public User() {
   }
-  
-  public User(String username, String password, String email, Collection<? extends GrantedAuthority> authorities) {
+
+  public User(String username, String password, String email,
+      Collection<? extends GrantedAuthority> authorities) {
     this.username = username;
     this.password = password;
     this.email = email;
@@ -41,9 +43,10 @@ public class User implements java.io.Serializable, UserDetails, CredentialsConta
     this.accountNonExpired = true;
     this.credentialsNonExpired = true;
     this.accountNonLocked = true;
-    this.authorities = Collections.unmodifiableSet(sortAuthorities(authorities));
+    this.authorities = Collections
+        .unmodifiableSet(sortAuthorities(authorities));
   }
-  
+
   public User(String id, String firstName, String lastName, String email) {
     this.id = id;
     this.firstName = firstName;
@@ -51,36 +54,38 @@ public class User implements java.io.Serializable, UserDetails, CredentialsConta
     this.username = email;
     this.email = email;
   }
-  
+
   public User(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-      this(username, password, true, true, true, true, authorities);
+    this(username, password, true, true, true, true, authorities);
   }
 
-  public User(String username, String password, boolean enabled, boolean accountNonExpired,
-          boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+  public User(String username, String password, boolean enabled,
+      boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
+      Collection<? extends GrantedAuthority> authorities) {
 
-      if (((username == null) || "".equals(username)) || (password == null)) {
-          throw new IllegalArgumentException("Cannot pass null or empty values to constructor");
-      }
+    if (((username == null) || "".equals(username)) || (password == null)) { 
+      throw new IllegalArgumentException("Cannot pass null or empty values to constructor");
+    }
 
-      this.username = username;
-      this.password = password;
-      this.enabled = enabled;
-      this.accountNonExpired = accountNonExpired;
-      this.credentialsNonExpired = credentialsNonExpired;
-      this.accountNonLocked = accountNonLocked;
-      this.authorities = Collections.unmodifiableSet(sortAuthorities(authorities));
+    this.username = username;
+    this.password = password;
+    this.enabled = enabled;
+    this.accountNonExpired = accountNonExpired;
+    this.credentialsNonExpired = credentialsNonExpired;
+    this.accountNonLocked = accountNonLocked;
+    this.authorities = Collections
+        .unmodifiableSet(sortAuthorities(authorities));
   }
-  
+
   @Id
   private String id;
   private String firstName;
   private String lastName;
-  
+
   @NotBlank(message = "Password should not be empty")
   @Size(min = 5, max = 30, message = "Password should be between 5 and 30 chacters")
   private String password;
-  
+
   @Email
   @NotBlank
   private String email;
@@ -93,22 +98,27 @@ public class User implements java.io.Serializable, UserDetails, CredentialsConta
   private boolean accountNonLocked;
   private boolean credentialsNonExpired;
   private boolean enabled;
-  
+
   public String getId() {
     return id;
   }
+
   public void setId(String id) {
     this.id = id;
   }
+
   public String getPassword() {
     return password;
   }
+
   public void setPassword(String password) {
     this.password = password;
   }
+
   public String getEmail() {
     return email;
   }
+
   public void setEmail(String email) {
     this.email = email;
   }
@@ -190,49 +200,53 @@ public class User implements java.io.Serializable, UserDetails, CredentialsConta
   public void setEnabled(boolean enabled) {
     this.enabled = enabled;
   }
-  
-  private static SortedSet<GrantedAuthority> sortAuthorities(Collection<? extends GrantedAuthority> authorities) {
-    Assert.notNull(authorities, "Cannot pass a null GrantedAuthority collection");
-    // Ensure array iteration order is predictable (as per UserDetails.getAuthorities() contract and SEC-717)
-    SortedSet<GrantedAuthority> sortedAuthorities =
-        new TreeSet<GrantedAuthority>(new AuthorityComparator());
+
+  private static SortedSet<GrantedAuthority> sortAuthorities(
+      Collection<? extends GrantedAuthority> authorities) {
+    Assert.notNull(authorities,
+        "Cannot pass a null GrantedAuthority collection");
+    // Ensure array iteration order is predictable (as per
+    // UserDetails.getAuthorities() contract and SEC-717)
+    SortedSet<GrantedAuthority> sortedAuthorities = new TreeSet<GrantedAuthority>(
+        new AuthorityComparator());
 
     for (GrantedAuthority grantedAuthority : authorities) {
-        Assert.notNull(grantedAuthority, "GrantedAuthority list cannot contain any null elements");
-        sortedAuthorities.add(grantedAuthority);
+      Assert.notNull(grantedAuthority, "GrantedAuthority list cannot contain any null elements");
+      sortedAuthorities.add(grantedAuthority);
     }
 
     return sortedAuthorities;
   }
 
-  private static class AuthorityComparator implements Comparator<GrantedAuthority>, Serializable {
-      private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
-  
-      public int compare(GrantedAuthority g1, GrantedAuthority g2) {
-          // Neither should ever be null as each entry is checked before adding it to the set.
-          // If the authority is null, it is a custom authority and should precede others.
-          if (g2.getAuthority() == null) {
-              return -1;
-          }
-  
-          if (g1.getAuthority() == null) {
-              return 1;
-          }
-  
-          return g1.getAuthority().compareTo(g2.getAuthority());
+  private static class AuthorityComparator implements
+      Comparator<GrantedAuthority>, Serializable {
+    private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
+
+    public int compare(GrantedAuthority g1, GrantedAuthority g2) {
+      // Neither should ever be null as each entry is checked before adding it to the set.
+      // If the authority is null, it is a custom authority and should precede others.
+      if (g2.getAuthority() == null) {
+        return -1;
       }
+
+      if (g1.getAuthority() == null) {
+        return 1;
+      }
+
+      return g1.getAuthority().compareTo(g2.getAuthority());
+    }
   }
-  
+
   @Override
   public boolean equals(Object rhs) {
-      if (rhs instanceof User) {
-          return username.equals(((User) rhs).username);
-      }
-      return false;
+    if (rhs instanceof User) {
+      return username.equals(((User) rhs).username);
+    }
+    return false;
   }
 
   @Override
   public int hashCode() {
-      return username.hashCode();
+    return username.hashCode();
   }
 }

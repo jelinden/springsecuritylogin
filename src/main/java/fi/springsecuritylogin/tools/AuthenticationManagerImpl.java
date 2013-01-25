@@ -19,12 +19,13 @@ public class AuthenticationManagerImpl implements AuthenticationManager {
     AUTHORITIES.add(new SimpleGrantedAuthority("ROLE_USER"));
   }
 
-  public Authentication authenticate(Authentication auth) throws AuthenticationException {
+  public Authentication authenticate(Authentication auth)
+      throws AuthenticationException {
     if (auth.getName().equals(auth.getCredentials())) {
       return new UsernamePasswordAuthenticationToken(auth.getName(),
-        auth.getCredentials(), AUTHORITIES);
-      }
-      throw new BadCredentialsException("Bad Credentials");
+          auth.getCredentials(), AUTHORITIES);
+    }
+    throw new BadCredentialsException("Bad Credentials");
 
   }
 }
